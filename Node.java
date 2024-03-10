@@ -1,6 +1,6 @@
 public class Node {
     private String data;
-    private Node parent, left, right;
+    private Node parent, left, right;       // verificar o funcionamento do calculate
 
     Node(String data, Node parent, Node left, Node right){
         this.setData(data);
@@ -75,7 +75,7 @@ public class Node {
         return 1 + Math.max(leftHeight, rightHeight);
     }
 
-    public float visit(Node aux){
+    public float visit(Node aux){           // resolver isso
         if(Utils.isNumeric(aux.getData())){
             return Float.parseFloat(aux.getData());
         }else if(aux.getData().equals("+")){

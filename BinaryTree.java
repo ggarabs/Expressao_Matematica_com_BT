@@ -19,7 +19,7 @@ public class BinaryTree {
         this.root = newRoot;
     }
 
-    public boolean isEmpty() {
+    public boolean isEmpty() {              // Testar se funciona para árvore vazia
         return this.getRoot() == null;
     }
 
@@ -77,15 +77,14 @@ public class BinaryTree {
         }
     }
 
-    public float calculate(Node root) {
-        System.out.println(root.getData());
+    public float calculate(Node root) {         // Resolver esse calculate...
         return root.visit(root);
     }
 
     public void buildTree(ArrayList<String> tokens) {
         Stack<Node> parents = new Stack<Node>(), children = new Stack<Node>();
 
-        Map<String, Integer> priority = new HashMap<String, Integer>();
+        Map<String, Integer> priority = new HashMap<String, Integer>();     // Isso deve mudar também
         priority.put("(", 0);
         priority.put(")", 0);
         priority.put("+", 1);

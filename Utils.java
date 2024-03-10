@@ -1,5 +1,5 @@
 public class Utils {
-    public static boolean isNumeric(String str){
+    public static boolean isNumeric(String str){        // verificar se posso fazer isso com Regex
         boolean ans = false;
         try {
             Double.parseDouble(str);

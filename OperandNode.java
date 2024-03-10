@@ -12,7 +12,7 @@ public class OperandNode extends Node {
     }
 
     @Override
-    public float visit(Node root){
+    public float visit(Node root){                      // resolver esse problema
         System.out.println("retornei " + root.getData());
         return Float.parseFloat(root.getData());
     }

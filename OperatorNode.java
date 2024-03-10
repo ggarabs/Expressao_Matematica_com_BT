@@ -12,7 +12,7 @@ public class OperatorNode extends Node{
     }
 
     @Override
-    public float visit(Node root){
+    public float visit(Node root){                      // resolver isso
         System.out.println("entrei no operador " + root.getData());
         if(this.getData().equals("+")) return visit(this.getLeft()) + visit(this.getRight());
         else if(this.getData().equals("-")) return visit(this.getLeft()) - visit(this.getRight());

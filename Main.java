@@ -10,6 +10,9 @@ public class Main {
         String command, expression = "";
         boolean endOfProgram = false;
 
+        // Adicionar flags para induzir o fluxo de funcionamento do programa
+        // Tratamento de erros
+        // Estética do programa
         do {
             System.out.print("Digite um comando: ");
             command = input.next();
