@@ -1,0 +1,8 @@
+
+ -------------------------M-E-N-U---------------------------
+| 1. Entrada da expressão aritmética na notação infixa.     |
+| 2. Criação da árvore binária de expressão aritmética.     |
+| 3. Exibição da árvore binária de expressão aritmética.    |
+| 4. Cálculo da expressão (realizando o percurso da árvore).|
+| 5. Encerramento do programa.                              |
+ -----------------------------------------------------------
