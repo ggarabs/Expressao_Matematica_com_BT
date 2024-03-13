@@ -19,11 +19,15 @@ public class BinaryTree {
         this.root = newRoot;
     }
 
-    public boolean isEmpty() {              // Testar se funciona para árvore vazia
+    public boolean isEmpty() {
         return this.getRoot() == null;
     }
 
-    public int getDegree(Node root) {
+    public int getDegree(){
+        return this.getDegree(this.root);
+    }
+
+    private int getDegree(Node root) {
         if (root == null)
             return -1;
         else if (root.getDegree() == 0)
@@ -31,21 +35,40 @@ public class BinaryTree {
         return Math.max(root.getDegree(), Math.max(this.getDegree(root.getLeft()), this.getDegree(root.getRight())));
     }
 
-    public int getHeight(Node root) {
+    public int getHeight(){
+        return this.getHeight(this.root);
+    }
+
+    private int getHeight(Node root) {
         if (root == null)
             return -1;
         return 1 + Math.max(this.getHeight(root.getLeft()), this.getHeight(root.getRight()));
     }
 
-    public void inOrderTraversal(Node root) {
-        if (root == null)
+    public void inOrderTraversal(){
+        if(this.root == null){
+            System.out.println("Árvore vazia!");
             return;
+        }
+        this.inOrderTraversal(this.root);
+    }
+
+    private void inOrderTraversal(Node root) {
+        if (root == null) return;
         this.inOrderTraversal(root.getLeft());
         System.out.printf("%s ", root.getData());
         this.inOrderTraversal(root.getRight());
     }
 
-    public void preOrderTraversal(Node root) {
+    public void preOrderTraversal(){
+        if(this.root == null){
+            System.out.println("Árvore vazia!");
+            return;
+        }
+        this.preOrderTraversal(this.root);
+    }
+
+    private void preOrderTraversal(Node root) {
         if (root == null)
             return;
         System.out.printf("%s ", root.getData());
@@ -53,7 +76,15 @@ public class BinaryTree {
         this.preOrderTraversal(root.getRight());
     }
 
-    public void postOrderTraversal(Node root) {
+    public void postOrderTraversal(){
+        if(this.root == null){
+            System.out.println("Árvore vazia!");
+            return;
+        }
+        this.postOrderTraversal(this.root);
+    }
+
+    private void postOrderTraversal(Node root) {
         if (root == null)
             return;
         this.postOrderTraversal(root.getLeft());
@@ -61,7 +92,15 @@ public class BinaryTree {
         System.out.printf("%s ", root.getData());
     }
 
-    public void levelOrderTraversal(Node root) {
+    public void levelOrderTraversal(){
+        if(this.root == null){
+            System.out.println("Árvore vazia!");
+            return;
+        }
+        this.levelOrderTraversal(this.root);
+    }
+
+    private void levelOrderTraversal(Node root) {
         Queue<Node> auxQueue = new LinkedList<Node>();
 
         auxQueue.add(root);
@@ -77,12 +116,21 @@ public class BinaryTree {
         }
     }
 
-    public float calculate(Node root) {         // Resolver esse calculate...
-        return root.visit(root);
+    public float calculate() {
+        if(this.root == null){
+            System.out.println("Árvore vazia! Não há o que calcular.");
+            return Float.NaN;
+        }
+        return root.visit();
     }
 
     public void buildTree(ArrayList<String> tokens) {
         Stack<Node> parents = new Stack<Node>(), children = new Stack<Node>();
+
+        if(tokens.isEmpty()){
+            System.out.println("Árvore binária vazia!");
+            return;
+        }
 
         Map<String, Integer> priority = new HashMap<String, Integer>();     // Isso deve mudar também
         priority.put("(", 0);
@@ -93,7 +141,7 @@ public class BinaryTree {
         priority.put("/", 2);
 
         for (String token : tokens) {
-            Node aux = new Node(token);
+            Node aux = new OperatorNode(token);
             if (token.equals("(")) {
                 parents.add(aux);
             } else if (token.equals(")")) {
@@ -112,6 +160,7 @@ public class BinaryTree {
                 }
                 parents.pop();
             } else if (Utils.isNumeric(token)) {
+                aux = new OperandNode(token);
                 children.add(aux);
             } else {
                 while (!parents.isEmpty() && priority.get(token) <= priority.get(parents.peek().getData())) {

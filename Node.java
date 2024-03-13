@@ -75,18 +75,8 @@ public class Node {
         return 1 + Math.max(leftHeight, rightHeight);
     }
 
-    public float visit(Node aux){           // resolver isso
-        if(Utils.isNumeric(aux.getData())){
-            return Float.parseFloat(aux.getData());
-        }else if(aux.getData().equals("+")){
-            return visit(aux.getLeft()) + visit(aux.getRight());
-        }else if(aux.getData().equals("-")){
-            return visit(aux.getLeft()) - visit(aux.getRight());
-        }else if(aux.getData().equals("*")){
-            return visit(aux.getLeft()) * visit(aux.getRight());
-        }else{
-            return visit(aux.getLeft()) / visit(aux.getRight());
-        }
+    public float visit(){
+        return Float.NaN;
     }
 
 }

@@ -38,7 +38,7 @@ public class ExpressionAnalyzer {
                 aux.push(symbol);
                 state = 0;
             } else if (symbol.equals(")")) {
-                if (aux.isEmpty())
+                if (aux.isEmpty() || state == 2)
                     return false; // parentesis fechando sem ser aberto
                 aux.pop();
                 state = 0;
@@ -52,7 +52,6 @@ public class ExpressionAnalyzer {
     }
 
     public static boolean analyze(String expression) {
-        System.out.println(expression);
         if (!LexicalAnalysis(expression).isEmpty()) return SyntaxAnalysis(LexicalAnalysis(expression));
 
         return false;
