@@ -11,7 +11,6 @@ public class Main {
         boolean endOfProgram = false, expressionRead = false, tokensGenerated = false;
 
         // Tratamento de erros
-        // Estética do programa
         do {
             System.out.print("Digite um comando: ");
             command = input.next();
@@ -53,7 +52,7 @@ public class Main {
                     expTree.buildTree(tokens);
                     tokensGenerated = true;
 
-                    System.out.println("Árvore binária construída!");
+                    System.out.println("Árvore binária construída!\n");
 
                     break;
                 case "3":
@@ -73,17 +72,7 @@ public class Main {
 
                     System.out.println("Percorrendo a àrvore binária... ");
 
-                    System.out.printf("Pré-Ordem: ");
-                    expTree.preOrderTraversal();
-                    System.out.println();
-
-                    System.out.printf("Em Ordem: ");
-                    expTree.inOrderTraversal();
-                    System.out.println();
-
-                    System.out.printf("Pós-Ordem: ");
-                    expTree.postOrderTraversal();
-                    System.out.println();
+                    expTree.printNodeInformation();
 
                     break;
                 case "4":
@@ -102,7 +91,9 @@ public class Main {
                         continue;
                     }
 
-                    System.out.printf("O resultado da expressão é: %.2f\n", expTree.calculate());
+                    float result = expTree.calculate();
+
+                    if(!Float.isNaN(result)) System.out.printf("O resultado da expressão é: %.2f\n\n", result);
                     expressionRead = false;
                     tokensGenerated = false;
 

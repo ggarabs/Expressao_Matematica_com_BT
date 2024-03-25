@@ -23,7 +23,7 @@ public class BinaryTree {
         return this.getRoot() == null;
     }
 
-    public int getDegree(){
+    public int getDegree() {
         return this.getDegree(this.root);
     }
 
@@ -35,7 +35,7 @@ public class BinaryTree {
         return Math.max(root.getDegree(), Math.max(this.getDegree(root.getLeft()), this.getDegree(root.getRight())));
     }
 
-    public int getHeight(){
+    public int getHeight() {
         return this.getHeight(this.root);
     }
 
@@ -45,27 +45,32 @@ public class BinaryTree {
         return 1 + Math.max(this.getHeight(root.getLeft()), this.getHeight(root.getRight()));
     }
 
-    public void inOrderTraversal(){
-        if(this.root == null){
+    public void inOrderTraversal() {
+        if (this.isEmpty()) {
             System.out.println("Árvore vazia!");
             return;
         }
+        System.out.printf("Percurso em ordem: ");
         this.inOrderTraversal(this.root);
+        System.out.println();
     }
 
     private void inOrderTraversal(Node root) {
-        if (root == null) return;
+        if (root == null)
+            return;
         this.inOrderTraversal(root.getLeft());
         System.out.printf("%s ", root.getData());
         this.inOrderTraversal(root.getRight());
     }
 
-    public void preOrderTraversal(){
-        if(this.root == null){
+    public void preOrderTraversal() {
+        if (this.root == null) {
             System.out.println("Árvore vazia!");
             return;
         }
+        System.out.printf("Percurso em pré-ordem: ");
         this.preOrderTraversal(this.root);
+        System.out.println();
     }
 
     private void preOrderTraversal(Node root) {
@@ -76,12 +81,14 @@ public class BinaryTree {
         this.preOrderTraversal(root.getRight());
     }
 
-    public void postOrderTraversal(){
-        if(this.root == null){
+    public void postOrderTraversal() {
+        if (this.root == null) {
             System.out.println("Árvore vazia!");
             return;
         }
+        System.out.printf("Percurso em pós-ordem: ");
         this.postOrderTraversal(this.root);
+        System.out.println();
     }
 
     private void postOrderTraversal(Node root) {
@@ -92,12 +99,14 @@ public class BinaryTree {
         System.out.printf("%s ", root.getData());
     }
 
-    public void levelOrderTraversal(){
-        if(this.root == null){
+    public void levelOrderTraversal() {
+        if (this.root == null) {
             System.out.println("Árvore vazia!");
             return;
         }
+        System.out.printf("Percurso em-nível: ");
         this.levelOrderTraversal(this.root);
+        System.out.println();
     }
 
     private void levelOrderTraversal(Node root) {
@@ -116,9 +125,37 @@ public class BinaryTree {
         }
     }
 
+    public void printNodeInformation() {
+        if (!this.isEmpty()) {
+            System.out.println("\nINFORMAÇÕES DOS NÓS: ");
+            this.printNodeInformation(this.root);
+        }
+        System.out.println("\nINFORMAÇÕES DA ÁRVORE BINÁRIA: ");
+        System.out.printf("A BT está vazia?: %b\n", this.isEmpty());
+        System.out.printf("Grau da BT: %d\n", this.getDegree());
+        System.out.printf("Altura da BT: %d\n", this.getHeight());
+
+        if (!this.isEmpty()) {
+            this.inOrderTraversal();
+            this.preOrderTraversal();
+            this.postOrderTraversal();
+            this.levelOrderTraversal();
+        }
+
+        System.out.println();
+    }
+
+    private void printNodeInformation(Node root) { // Imprimir informações na travessia em ordem
+        if (root == null)
+            return;
+        this.printNodeInformation(root.getLeft());
+        root.printInformations();
+        this.printNodeInformation(root.getRight());
+    }
+
     public float calculate() {
-        if(this.root == null){
-            System.out.println("Árvore vazia! Não há o que calcular.");
+        if (this.root == null) {
+            System.out.println("Árvore vazia! Não há o que calcular.\n");
             return Float.NaN;
         }
         return root.visit();
@@ -127,12 +164,12 @@ public class BinaryTree {
     public void buildTree(ArrayList<String> tokens) {
         Stack<Node> parents = new Stack<Node>(), children = new Stack<Node>();
 
-        if(tokens.isEmpty()){
+        if (tokens.isEmpty()) {
             System.out.println("Árvore binária vazia!");
             return;
         }
 
-        Map<String, Integer> priority = new HashMap<String, Integer>();     // Isso deve mudar também
+        Map<String, Integer> priority = new HashMap<String, Integer>();
         priority.put("(", 0);
         priority.put(")", 0);
         priority.put("+", 1);
