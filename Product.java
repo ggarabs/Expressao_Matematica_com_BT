@@ -15,5 +15,4 @@ public class Product extends OperatorNode{
     public float visit(){
         return this.getLeft().visit() * this.getRight().visit();
     }
-
 }

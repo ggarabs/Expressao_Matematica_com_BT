@@ -175,21 +175,29 @@ public class BinaryTree {
         priority.put(")", 0);
         priority.put("+", 1);
         priority.put("-", 1);
+        priority.put("!", 1);   // Auxiliar para diferenciar operador unário '-'
+        priority.put("@", 1);   // Auxiliar para diferenciar operador unário '+'
         priority.put("*", 2);
         priority.put("/", 2);
 
         Node parent = null, right = null, left = null;
 
-        for (String token : tokens) {
-            Node aux = new OperatorNode(token);
-            if (token.equals("(")) {
+        for (int i = 0; i < tokens.size(); i++) {
+            Node aux = new OperatorNode(tokens.get(i));
+            if (tokens.get(i).equals("(")) {
                 parents.add(aux);
-            } else if (token.equals(")")) {
+            } else if (tokens.get(i).equals(")")) {
                 while (!parents.peek().getData().equals("(")) {
-                    right = children.pop();
-                    if(children.size() > 0) left = children.pop();
-                    else left = null;
                     parent = parents.pop();
+                    right = children.pop();
+                    if(children.size() > 0 && !parent.getData().equals("!") && !parent.getData().equals("@")) left = children.pop();
+                    else if(parent.getData().equals("!")){
+                        parent.setData("-");
+                        left = null;
+                    }else if(parent.getData().equals("@")){
+                        parent.setData("-");
+                        left = null;
+                    }
                     parent.setLeft(left);
                     parent.setRight(right);
                     if(left != null) left.setParent(parent);
@@ -202,33 +210,41 @@ public class BinaryTree {
                     }
                 }
                 parents.pop();
-            } else if (Utils.isNumeric(token)) {
-                aux = new OperandNode(token);
+            } else if (Utils.isNumeric(tokens.get(i))) {
+                aux = new OperandNode(tokens.get(i));
                 children.add(aux);
             } else {
-                switch (token) {
+                switch (tokens.get(i)) {
                     case "+":
-                        aux = new Sum(token);
+                        if((i == 0) || (i+1 != tokens.size() && tokens.get(i-1).equals("(") && tokens.get(i+1).equals("("))) aux = new Sum("@");
+                        else aux = new Sum(tokens.get(i));
                         break;
                     case "-":
-                        aux = new Difference(token);
+                        if((i == 0) || (i+1 != tokens.size() && tokens.get(i-1).equals("(") && tokens.get(i+1).equals("("))) aux = new Difference("!");
+                        else aux = new Difference(tokens.get(i));
                         break;
                     case "*":
-                        aux = new Product(token);
+                        aux = new Product(tokens.get(i));
                         break;
                     case "/":
-                        aux = new Quocient(token);
+                        aux = new Quocient(tokens.get(i));
                         break;
                     default:
                         System.out.println("Operador inválido!");
                         break;
                 }
 
-                while (!parents.isEmpty() && priority.get(token) <= priority.get(parents.peek().getData())) {
-                    right = children.pop();
-                    if(children.size() > 0) left = children.pop();
-                    else left = null;
+                while (!parents.isEmpty() && priority.get(tokens.get(i)) <= priority.get(parents.peek().getData())) {
                     parent = parents.pop();
+                    right = children.pop();
+                    if(children.size() > 0 && !parent.getData().equals("!") && !parent.getData().equals("@")) left = children.pop();
+                    else if(parent.getData().equals("!")){
+                        parent.setData("-");
+                        left = null;
+                    }else if(parent.getData().equals("@")){
+                        parent.setData("+");
+                        left = null;
+                    }
                     parent.setLeft(left);
                     parent.setRight(right);
                     if(left != null) left.setParent(parent);
@@ -248,8 +264,14 @@ public class BinaryTree {
         while (!parents.isEmpty()) {
             parent = parents.pop();
             right = children.pop();
-            if(children.size() > 0) left = children.pop();
-            else left = null;
+            if(children.size() > 0 && !parent.getData().equals("!") && !parent.getData().equals("@")) left = children.pop();
+            else if(parent.getData().equals("!")){
+                parent.setData("-");
+                left = null;
+            }else if(parent.getData().equals("@")){
+                parent.setData("+");
+                left = null;
+            }
             parent.setLeft(left);
             parent.setRight(right);
             if(left != null) left.setParent(parent);

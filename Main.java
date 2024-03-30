@@ -94,7 +94,7 @@ public class Main {
                     float result = expTree.calculate();
 
                     if(!Float.isNaN(result)) System.out.printf("O resultado da expressão é: %.2f\n\n", result);
-                    else System.out.println("Impossível dividir por zero!\n");
+                    else System.out.println("Operação inválida! Há alguma divisão por zero ou a árvore está vazia\n");
 
                     expressionRead = false;
                     tokensGenerated = false;

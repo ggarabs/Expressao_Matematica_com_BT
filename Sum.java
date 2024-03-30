@@ -16,5 +16,4 @@ public class Sum extends OperatorNode{
         Float left = this.getLeft() == null ? 0.0f : this.getLeft().visit(), right = this.getRight().visit();
         return left + right;
     }
-
 }
