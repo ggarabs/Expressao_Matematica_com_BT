@@ -96,6 +96,7 @@ public class Main {
                     if(!Float.isNaN(result)) System.out.printf("O resultado da expressão é: %.2f\n\n", result);
                     expressionRead = false;
                     tokensGenerated = false;
+                    expTree.clear();
 
                     break;
                 case "5":

@@ -28,10 +28,22 @@ public class Tokenizer {
             if (Character.isDigit(currChar)) {
                 sb.setLength(0);
                 while (Character.isDigit(currChar) || currChar == '.' || Character.isWhitespace(currChar)) {
-                    if(!Character.isWhitespace(currChar)) sb.append(currChar);
+                    if (!Character.isWhitespace(currChar))
+                        sb.append(currChar);
                     currChar = getNextChar();
                 }
-                tokens.add(sb.toString());
+                if ((tokens.size() >= 2
+                        && (tokens.get(tokens.size() - 1).equals("+") || tokens.get(tokens.size() - 1).equals("-"))
+                        && tokens.get(tokens.size() - 2).equals("("))
+                        || (tokens.size() > 0 && tokens.size() < 2 && (tokens.get(tokens.size() - 1).equals("+")
+                                || tokens.get(tokens.size() - 1).equals("-")))) {
+                    if (tokens.get(tokens.size() - 1).equals("-"))
+                        tokens.set(tokens.size() - 1, "-" + sb.toString());
+                    else
+                        tokens.set(tokens.size() - 1, sb.toString());
+                } else {
+                    tokens.add(sb.toString());
+                }
             } else if (currChar == '+') {
                 tokens.add("+");
                 currChar = getNextChar();
@@ -57,6 +69,7 @@ public class Tokenizer {
                 isTokenizing = false;
             }
         }
+
         return tokens;
     }
 }

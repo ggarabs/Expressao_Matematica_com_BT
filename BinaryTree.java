@@ -130,6 +130,7 @@ public class BinaryTree {
             System.out.println("\nINFORMAÇÕES DOS NÓS: ");
             this.printNodeInformation(this.root);
         }
+
         System.out.println("\nINFORMAÇÕES DA ÁRVORE BINÁRIA: ");
         System.out.printf("A BT está vazia?: %b\n", this.isEmpty());
         System.out.printf("Grau da BT: %d\n", this.getDegree());
@@ -148,8 +149,8 @@ public class BinaryTree {
     private void printNodeInformation(Node root) { // Imprimir informações na travessia em ordem
         if (root == null)
             return;
-        this.printNodeInformation(root.getLeft());
         root.printInformations();
+        this.printNodeInformation(root.getLeft());
         this.printNodeInformation(root.getRight());
     }
 
@@ -177,13 +178,17 @@ public class BinaryTree {
         priority.put("*", 2);
         priority.put("/", 2);
 
+        Node parent = null, right = null, left = null;
+
         for (String token : tokens) {
             Node aux = new OperatorNode(token);
             if (token.equals("(")) {
                 parents.add(aux);
             } else if (token.equals(")")) {
                 while (!parents.peek().getData().equals("(")) {
-                    Node parent = parents.pop(), right = children.pop(), left = children.pop();
+                    right = children.pop();
+                    left = children.pop();
+                    parent = parents.pop();
                     parent.setLeft(left);
                     parent.setRight(right);
                     left.setParent(parent);
@@ -193,6 +198,7 @@ public class BinaryTree {
                     if (parents.isEmpty()) {
                         children.pop();
                         this.setRoot(parent);
+                        System.out.println("entrei");
                     }
                 }
                 parents.pop();
@@ -201,7 +207,9 @@ public class BinaryTree {
                 children.add(aux);
             } else {
                 while (!parents.isEmpty() && priority.get(token) <= priority.get(parents.peek().getData())) {
-                    Node parent = parents.pop(), right = children.pop(), left = children.pop();
+                    right = children.pop();
+                    left = children.pop();
+                    parent = parents.pop();
                     parent.setLeft(left);
                     parent.setRight(right);
                     left.setParent(parent);
@@ -213,8 +221,15 @@ public class BinaryTree {
             }
         }
 
+        if(this.getRoot() == null && parents.isEmpty()){
+            if(children.isEmpty()) this.setRoot(parent); 
+            else if(parents.isEmpty()) this.setRoot(children.pop());
+        }
+
         while (!parents.isEmpty()) {
-            Node parent = parents.pop(), right = children.pop(), left = children.pop();
+            parent = parents.pop();
+            right = children.pop();
+            left = children.pop();
 
             parent.setLeft(left);
             parent.setRight(right);
@@ -226,9 +241,23 @@ public class BinaryTree {
                 children.pop();
                 this.setRoot(parent);
             }
-
         }
 
+    }
+
+    private void clear(Node root){      // limpa conexões e nodes
+        if (root == null) return;
+        this.clear(root.getLeft());
+        this.clear(root.getRight());
+        root.setLeft(null);
+        root.setRight(null);
+        root.setParent(null);
+        root = null;
+    }
+
+    public void clear(){
+        this.clear(this.getRoot());
+        this.setRoot(null);
     }
 
 }
