@@ -12,7 +12,7 @@ public class OperandNode extends Node {
     }
 
     @Override
-    public float visit(){
+    public float visit(){   // Se for um operando, é folha. Logo, converto o conteudo do nó e retorno
         return Float.parseFloat(this.getData());
     }
 }

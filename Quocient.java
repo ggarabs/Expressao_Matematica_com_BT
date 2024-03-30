@@ -13,7 +13,7 @@ public class Quocient extends OperatorNode{
 
     @Override
     public float visit(){
-        if(this.getRight().visit() == 0) return Float.NaN;
+        if(this.getRight().visit() == 0) return Float.NaN;  // Divisão por zero retorna NaN
         return this.getLeft().visit() / this.getRight().visit();
     }
 }

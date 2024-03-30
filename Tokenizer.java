@@ -22,16 +22,20 @@ public class Tokenizer {
 
         boolean isTokenizing = true;
         while (isTokenizing) {
-            while (Character.isWhitespace(currChar))
+            while (Character.isWhitespace(currChar)) // se for um espaço, basta pegar o próximo caractere
                 currChar = getNextChar();
 
-            if (Character.isDigit(currChar)) {
+            if (Character.isDigit(currChar)) { // se for algarismo
                 sb.setLength(0);
+                // enquanto o número tiver mais casas, ponto flutuante ou for separado por
+                // espaço
                 while (Character.isDigit(currChar) || currChar == '.' || Character.isWhitespace(currChar)) {
-                    if (!Character.isWhitespace(currChar))
+                    if (!Character.isWhitespace(currChar)) // armazeno no SB
                         sb.append(currChar);
-                    currChar = getNextChar();
+                    currChar = getNextChar(); // pego o próximo
                 }
+                // se o numero for acompanhado de um sinal, incorporo o token anterior '+' ou
+                // '-' no número e substituo no lugar do anterior
                 if ((tokens.size() >= 2
                         && (tokens.get(tokens.size() - 1).equals("+") || tokens.get(tokens.size() - 1).equals("-"))
                         && tokens.get(tokens.size() - 2).equals("("))
@@ -41,7 +45,7 @@ public class Tokenizer {
                         tokens.set(tokens.size() - 1, "-" + sb.toString());
                     else
                         tokens.set(tokens.size() - 1, sb.toString());
-                } else {
+                } else {    // se não tiver nenhum sinal antes, armazeno o número normalmente como token
                     tokens.add(sb.toString());
                 }
             } else if (currChar == '+') {
@@ -64,7 +68,7 @@ public class Tokenizer {
                 currChar = getNextChar();
             } else if (currChar == '\0') {
                 isTokenizing = false;
-            } else {
+            } else {    // se encontro um operador inválido, zero a lista e a retorno vazia
                 tokens = new ArrayList<String>();
                 isTokenizing = false;
             }

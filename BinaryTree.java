@@ -159,7 +159,7 @@ public class BinaryTree {
             System.out.println("Árvore vazia! Não há o que calcular.\n");
             return Float.NaN;
         }
-        return root.visit();
+        return root.visit();    // Para calcular o resultado da expressão, visito a raiz
     }
 
     public void buildTree(ArrayList<String> tokens) {
@@ -169,6 +169,8 @@ public class BinaryTree {
             System.out.println("Árvore binária vazia!");
             return;
         }
+
+        // HashMap utilizado para associar os operadores a suas prioridades
 
         Map<String, Integer> priority = new HashMap<String, Integer>();
         priority.put("(", 0);
@@ -182,45 +184,55 @@ public class BinaryTree {
 
         Node parent = null, right = null, left = null;
 
-        for (int i = 0; i < tokens.size(); i++) {
+        for (int i = 0; i < tokens.size(); i++) {   // percorre os tokens armazenados
             Node aux = new OperatorNode(tokens.get(i));
-            if (tokens.get(i).equals("(")) {
+            if (tokens.get(i).equals("(")) {       // se o token for '(', empilhe-o em parents
                 parents.add(aux);
-            } else if (tokens.get(i).equals(")")) {
+            } else if (tokens.get(i).equals(")")) { // se for ')', desempilhe até encontrar o '('
                 while (!parents.peek().getData().equals("(")) {
-                    parent = parents.pop();
-                    right = children.pop();
+
+                    parent = parents.pop();     // recebe o operador atual
+                    right = children.pop();     // recebe o operando da direita
+
+                    // se ele satisfazer essas condições, é operador binário, senão é unário
                     if(children.size() > 0 && !parent.getData().equals("!") && !parent.getData().equals("@")) left = children.pop();
                     else if(parent.getData().equals("!")){
+                        // sendo unário, mudamos o simbolo antes de armazenar na árvore e o filho da esquerda é nulo
                         parent.setData("-");
                         left = null;
                     }else if(parent.getData().equals("@")){
-                        parent.setData("-");
+                        parent.setData("+");
                         left = null;
                     }
+
                     parent.setLeft(left);
                     parent.setRight(right);
-                    if(left != null) left.setParent(parent);
+                    if(left != null) left.setParent(parent);    // só conecto o filho da esquerda ao pai se não for unário
                     right.setParent(parent);
-                    children.add(parent);
 
-                    if (parents.isEmpty()) {
+                    children.add(parent);   // após fazer as conexões nos nós, eu armazeno o pai na pilha dos filhos
+
+                    if (parents.isEmpty()) {    // se a pilha esvaziou, então define-se o ultimo pai como raiz
                         children.pop();
                         this.setRoot(parent);
                     }
                 }
-                parents.pop();
+                parents.pop();  // apaga o '(' da pilha
             } else if (Utils.isNumeric(tokens.get(i))) {
                 aux = new OperandNode(tokens.get(i));
-                children.add(aux);
-            } else {
+                children.add(aux);  // se é um operando, empilho-o em children
+            } else {    // se for um operador, 
                 switch (tokens.get(i)) {
                     case "+":
+                        // operador unário
                         if((i == 0) || (i+1 != tokens.size() && tokens.get(i-1).equals("(") && tokens.get(i+1).equals("("))) aux = new Sum("@");
+                        // operador binário
                         else aux = new Sum(tokens.get(i));
                         break;
                     case "-":
+                        // operador unário
                         if((i == 0) || (i+1 != tokens.size() && tokens.get(i-1).equals("(") && tokens.get(i+1).equals("("))) aux = new Difference("!");
+                        // operador binário                        
                         else aux = new Difference(tokens.get(i));
                         break;
                     case "*":
@@ -234,33 +246,38 @@ public class BinaryTree {
                         break;
                 }
 
+                // enquanto o nó atual tiver prioridade menor que os que estão empilhados em parents, removo os topos e monto suas ligações
                 while (!parents.isEmpty() && priority.get(tokens.get(i)) <= priority.get(parents.peek().getData())) {
                     parent = parents.pop();
                     right = children.pop();
+                    // se não for um operador unário, armazeno o topo do children no nó da esquerda
                     if(children.size() > 0 && !parent.getData().equals("!") && !parent.getData().equals("@")) left = children.pop();
                     else if(parent.getData().equals("!")){
+                        // sendo unário, mudo o conteúdo antes de armazenar na árvore e o filho da esquerda é nulo
                         parent.setData("-");
                         left = null;
                     }else if(parent.getData().equals("@")){
                         parent.setData("+");
                         left = null;
                     }
+
                     parent.setLeft(left);
                     parent.setRight(right);
                     if(left != null) left.setParent(parent);
                     right.setParent(parent);
-                    children.add(parent);
-                }
 
+                    children.add(parent);   // adiciono o ultimo pai à pilha dos filhos
+                }
                 parents.add(aux);
             }
         }
 
-        if(this.getRoot() == null && parents.isEmpty()){
-            if(children.isEmpty()) this.setRoot(parent); 
-            else if(parents.isEmpty()) this.setRoot(children.pop());
+        if(this.getRoot() == null && parents.isEmpty()){    // se a análise terminou e a árvore ainda não tem raiz
+            if(children.isEmpty()) this.setRoot(parent); // armazeno o último pai
+            else if(parents.isEmpty()) this.setRoot(children.pop());    // ou o último filho
         }
 
+        // o mesmo que o trecho acima, só que com os nós que restaram na pilha após a análise
         while (!parents.isEmpty()) {
             parent = parents.pop();
             right = children.pop();
@@ -286,7 +303,7 @@ public class BinaryTree {
 
     }
 
-    private void clear(Node root){      // limpa conexões e nodes
+    private void clear(Node root){      // limpa arestas e vértices percoreendo a árvore em pós-ordem
         if (root == null) return;
         this.clear(root.getLeft());
         this.clear(root.getRight());

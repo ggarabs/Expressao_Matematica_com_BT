@@ -12,7 +12,7 @@ public class Sum extends OperatorNode{
     }
 
     @Override
-    public float visit(){
+    public float visit(){   // se a soma for unária, o filho da esquerda é nulo e deve-se tratar ele como zero.
         Float left = this.getLeft() == null ? 0.0f : this.getLeft().visit(), right = this.getRight().visit();
         return left + right;
     }

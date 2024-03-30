@@ -4,7 +4,8 @@ public class ExpressionAnalyzer {
     private static ArrayList<String> LexicalAnalysis(String expression) {
         Tokenizer auxTokenizer = new Tokenizer(expression);
 
-        ArrayList<String> tokens = auxTokenizer.tokenize();
+        ArrayList<String> tokens = auxTokenizer.tokenize(); // tento tokenizar a expressão, se conseguir eu recebo uma
+                                                            // lista não vazia
 
         return tokens;
     }
@@ -18,7 +19,7 @@ public class ExpressionAnalyzer {
          * ESTADO = 1 => OPERANDO
          * ESTADO = 2 => OPERADOR
          * ESTADO = 3 => FECHA PARENTESIS
-        */
+         */
 
         int state = 0;
 
@@ -43,11 +44,13 @@ public class ExpressionAnalyzer {
                     return false; // parentesis fechando sem ser aberto
                 aux.pop();
                 state = 3;
-            } else if (Utils.isNumeric(symbol)){
-                if(state == 3) return false; // operando depois de parentesis fechado
+            } else if (Utils.isNumeric(symbol)) {
+                if (state == 3)
+                    return false; // operando depois de parentesis fechado
                 state = 1;
-            }else{
-                if((symbol.equals("/") || symbol.equals("*")) && state == 0) return false; // operador / ou * precedido por ( ou nada
+            } else {
+                if ((symbol.equals("/") || symbol.equals("*")) && state == 0)
+                    return false; // operador / ou * precedido por ( ou nada
                 state = 2;
             }
         }
@@ -56,8 +59,9 @@ public class ExpressionAnalyzer {
     }
 
     public static boolean analyze(String expression) {
-        ArrayList <String> lexicallyValid = LexicalAnalysis(expression);
-        if (!lexicallyValid.isEmpty()) return SyntaxAnalysis(lexicallyValid);
+        ArrayList<String> lexicallyValid = LexicalAnalysis(expression); // faço a análise léxica
+        if (!lexicallyValid.isEmpty())
+            return SyntaxAnalysis(lexicallyValid); // se ela retornar uma lista de tokens, faço a análise sintática
 
         return false;
     }

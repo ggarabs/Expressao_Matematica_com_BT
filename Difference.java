@@ -12,7 +12,7 @@ public class Difference extends OperatorNode{
     }
 
     @Override
-    public float visit(){
+    public float visit(){   // operação unária: se o filho da esquerda for nulo, retorna 0-direita
         Float left = this.getLeft() == null ? 0.0f : this.getLeft().visit(), right = this.getRight().visit();
         return left - right;
     }

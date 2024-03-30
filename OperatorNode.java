@@ -12,7 +12,7 @@ public class OperatorNode extends Node {
     }
 
     @Override
-    public float visit(){
+    public float visit(){ // Operador receberá especialização, portanto aqui só retorno NaN
         return Float.NaN;
     }
 }
