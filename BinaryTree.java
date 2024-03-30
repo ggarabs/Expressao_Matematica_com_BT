@@ -187,18 +187,18 @@ public class BinaryTree {
             } else if (token.equals(")")) {
                 while (!parents.peek().getData().equals("(")) {
                     right = children.pop();
-                    left = children.pop();
+                    if(children.size() > 0) left = children.pop();
+                    else left = null;
                     parent = parents.pop();
                     parent.setLeft(left);
                     parent.setRight(right);
-                    left.setParent(parent);
+                    if(left != null) left.setParent(parent);
                     right.setParent(parent);
                     children.add(parent);
 
                     if (parents.isEmpty()) {
                         children.pop();
                         this.setRoot(parent);
-                        System.out.println("entrei");
                     }
                 }
                 parents.pop();
@@ -206,13 +206,32 @@ public class BinaryTree {
                 aux = new OperandNode(token);
                 children.add(aux);
             } else {
+                switch (token) {
+                    case "+":
+                        aux = new Sum(token);
+                        break;
+                    case "-":
+                        aux = new Difference(token);
+                        break;
+                    case "*":
+                        aux = new Product(token);
+                        break;
+                    case "/":
+                        aux = new Quocient(token);
+                        break;
+                    default:
+                        System.out.println("Operador inválido!");
+                        break;
+                }
+
                 while (!parents.isEmpty() && priority.get(token) <= priority.get(parents.peek().getData())) {
                     right = children.pop();
-                    left = children.pop();
+                    if(children.size() > 0) left = children.pop();
+                    else left = null;
                     parent = parents.pop();
                     parent.setLeft(left);
                     parent.setRight(right);
-                    left.setParent(parent);
+                    if(left != null) left.setParent(parent);
                     right.setParent(parent);
                     children.add(parent);
                 }
@@ -229,11 +248,11 @@ public class BinaryTree {
         while (!parents.isEmpty()) {
             parent = parents.pop();
             right = children.pop();
-            left = children.pop();
-
+            if(children.size() > 0) left = children.pop();
+            else left = null;
             parent.setLeft(left);
             parent.setRight(right);
-            left.setParent(parent);
+            if(left != null) left.setParent(parent);
             right.setParent(parent);
             children.add(parent);
 
