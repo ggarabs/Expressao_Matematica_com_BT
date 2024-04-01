@@ -1,3 +1,10 @@
+/*  UNIVERSIDADE PRESBITERIANA MACKENZIE
+ *  Nome: Gustavo Garabetti Munhoz
+ *  Referências:
+ *  HashMap: https://www.devmedia.com.br/hashmap-java-trabalhando-com-listas-key-value/29811
+ *  ArrayList operations: https://www.geeksforgeeks.org/arraylist-in-java/
+ */
+
 import java.util.*;
 
 public class Main {
